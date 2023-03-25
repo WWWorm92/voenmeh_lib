@@ -1,20 +1,21 @@
 import telebot
 from telebot import types
 import datetime
+current_keyboard = 0
 
 # Создаем экземпляр бота
 bot = telebot.TeleBot('6128509852:AAHtAYWFyXbeOlKWRTuAn551gP2CTheKw1c')
 
 # Создаем клавиатурный лейаут
-keyboard_layout_1 = types.InlineKeyboardMarkup(row_width=2)
+keyboard_layout_1 = types.InlineKeyboardMarkup(row_width=1)
 keyboard_layout_1.add(types.InlineKeyboardButton('Режим работы', callback_data='departments_shedule'),
                       types.InlineKeyboardButton('Читальные залы', callback_data='reading_halls'),
                       types.InlineKeyboardButton('Контакты', callback_data='contacts'),
                       types.InlineKeyboardButton('Как взять литературу?', callback_data='how_to_1'),
                       types.InlineKeyboardButton('Как получить читательский билет?', callback_data='how_to_2')
                       )
-keyboard_layout_1.add(types.InlineKeyboardButton('-> 2', callback_data='next_1'))
-keyboard_layout_2 = types.InlineKeyboardMarkup(row_width=2)
+keyboard_layout_1.add(types.InlineKeyboardButton('➡', callback_data='next_1'))
+keyboard_layout_2 = types.InlineKeyboardMarkup(row_width=1)
 keyboard_layout_2.add(
     types.InlineKeyboardButton('Как воспользоваться библиотечными системами из дома?', callback_data='how_to_3'),
     types.InlineKeyboardButton('Режим работы отделов сервисных услуг и секции организации выставок',
@@ -23,15 +24,16 @@ keyboard_layout_2.add(
     types.InlineKeyboardButton('Как оплатить утерянную книгу?', callback_data='how_to_4'),
     types.InlineKeyboardButton('Как узнать на какой срок выдана книга?', callback_data='how_to_5')
 )
-keyboard_layout_2.add(types.InlineKeyboardButton('1 <-', callback_data='back_2'),
-                      types.InlineKeyboardButton('-> 3', callback_data='next_2'))
-keyboard_layout_3 = types.InlineKeyboardMarkup(row_width=2)
+keyboard_layout_2.add(types.InlineKeyboardButton('⬅', callback_data='back_2'),
+                      types.InlineKeyboardButton('➡', callback_data='next_2'))
+keyboard_layout_3 = types.InlineKeyboardMarkup(row_width=1)
 keyboard_layout_3.add(types.InlineKeyboardButton('Как продлить литературу?', callback_data='how_to_6'),
                       types.InlineKeyboardButton('Как подписать обходной лист?', callback_data='how_to_7'),
                       )
-keyboard_layout_3.add(types.InlineKeyboardButton('2 <-', callback_data='back_3'))
-
-current_keyboard = 1
+keyboard_layout_3.add(types.InlineKeyboardButton('⬅', callback_data='back_3'))
+keyboard_delete = telebot.types.InlineKeyboardMarkup()
+delete_button = telebot.types.InlineKeyboardButton(text='Удалить', callback_data='delete_message')
+keyboard_delete.add(delete_button)
 
 
 # Обработчик для команды /start
@@ -40,15 +42,19 @@ def start_handler(message):
     global current_keyboard
     # Получаем имя пользователя из объекта message
     first_name = message.from_user.first_name
-    last_name = message.from_user.last_name
+    # last_name = message.from_user.last_name
     # Отправляем приветственное сообщение с использованием имени пользователя
-    bot.send_message(message.chat.id, f"Привет, {first_name} {last_name}! Что тебя интересует?",
+    bot.send_message(message.chat.id, f"Привет, {first_name}! Что тебя интересует?",
                      reply_markup=keyboard_layout_1)
 
 
 # Обработчик для кнопок
 @bot.callback_query_handler(func=lambda call: True)
 def button_handler(call):
+    if call.data == 'delete_message':
+        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+    chat_id = call.message.chat.id
+    message_id = call.message.message_id
     # Получаем текст кнопки из объекта call
     text = call.data
     # Отвечаем на вопрос пользователя
@@ -61,18 +67,20 @@ def button_handler(call):
                          '- Абонемент общественно-политической литературы: ПН – ЧТ 9:00 – 17:00, ПТ 9:00 – 16:00, перерыв с 12:00 до 12:30\n'
                          '- Отдел комплектования: ПН – ПТ 9:00 – 17:00, перерыв 12:00 – 12:30\n'
                          '- Информационно-библиографический отдел ПН – ПТ 9:00 – 17:00, перерыв 12:00 – 12:30\n'
-                         '- Отдел сервисных услуг и сектор организации выставок ПН – ПТ 9:00 – 17:00, перерыв 12:00 – 12:30')
+                         '- Отдел сервисных услуг и сектор организации выставок ПН – ПТ 9:00 – 17:00, перерыв 12:00 – 12:30', reply_markup=keyboard_delete
+                         )
     elif text == 'reading_halls':
         bot.send_message(call.message.chat.id, 'Режим работы читальных залов:\n'
                                                '- Главный корпус 3 этаж: ПН – ПТ 9:00 – 19:00, СБ 9:00 – 15:00\n'
                                                '- Главный корпус 4 этаж (школа): ПН – ПТ 11:00 – 19:00\n'
-                                               '- УЛК 2 этаж: ПН – ПТ 9:00 – 19:00')
+                                               '- УЛК 2 этаж: ПН – ПТ 9:00 – 19:00', reply_markup=keyboard_delete)
+
     elif text == 'contacts':
         bot.send_message(call.message.chat.id, '- Директор библиотеки Сессина Н.В. +7(812)490-05-86\n'
                                                '- Зам.директора Перепеч С.Б. +7(812)495-76-84\n'
                                                '- Отдел научной литературы  +7(812)495-76-56\n'
                                                '- Отдел учебной литературы в Главном корпусе +7(812)495-76-97\n'
-                                               '- Отдел учебной литературы в УЛК +7(812)490-05-39')
+                                               '- Отдел учебной литературы в УЛК +7(812)490-05-39', reply_markup=keyboard_delete)
     elif text == 'how_to_1':
         bot.send_message(call.message.chat.id,
                          'Книгу в печатном формате можно получить на абонементах, заполнив заявочный лист.\n'
@@ -83,17 +91,17 @@ def button_handler(call):
                          ' -Том\n'
                          ' -Год издания\n'
                          'Вся информация содержится в [эл.каталоге](ya.ru)\n\n'
-                         'Для получения литературы необходимо иметь читательский билет.', parse_mode='Markdown')
+                         'Для получения литературы необходимо иметь читательский билет.', parse_mode='Markdown', reply_markup=keyboard_delete)
     elif text == 'how_to_2':
         bot.send_message(call.message.chat.id,
                          'Читательский билет можно получить в библиотеке главного корпуса на 3 этаже.\n'
-                         'С собой достаточно иметь пропуск.')
+                         'С собой достаточно иметь пропуск.', reply_markup=keyboard_delete)
     elif text == 'how_to_3':
-        bot.send_message(call.message.chat.id, '........Отправить пдф со всеми э-библиотечными системами.......\n')
+        bot.send_message(call.message.chat.id, 'https://telegra.ph/Rekomendacii-po-ispolzovaniyu-biblioteki-Voenmeha-03-25\n', reply_markup=keyboard_delete)
     elif text == 'service_shedule':
-        bot.send_message(call.message.chat.id, 'Режим работы отделов сервисных услуг и секции организации выставок:\n''
+        bot.send_message(call.message.chat.id, 'Режим работы отделов сервисных услуг и секции организации выставок:\n'
                                                '- Главный корпус 3 этаж: ПН – ЧТ 9:00 – 17:00, ПТ 10:00 – 17:00, перерыв с 12:00 до 12:30\n'
-                                               '- Новый корпус 2 этаж: ПН – ЧТ 9:00 – 17:00, ПТ 10:00 – 17:00, перерыв с 12:00 до 12:30')
+                                               '- Новый корпус 2 этаж: ПН – ЧТ 9:00 – 17:00, ПТ 10:00 – 17:00, перерыв с 12:00 до 12:30', reply_markup=keyboard_delete)
     elif text == 'price':
         bot.send_message(call.message.chat.id, 'Черно-белая печать:\n'
                                                'А4 – 5р.\n'
@@ -106,22 +114,38 @@ def button_handler(call):
                                                'А3 – 10р.\n'
                                                'за одну страницу\n\n'
                                                'Сканирование – 10р.\n\n'
-                                               'В продаже также имеются канцтовары и книги.')
+                                               'В продаже также имеются канцтовары и книги.', reply_markup=keyboard_delete)
     elif text == 'how_to_4':
         bot.send_message(call.message.chat.id,
                          'В случае утери книги необходимо прийти в отдел комплектования (Главный корпус 3 этаж дверь перед абонементом), '
-                         'где вам посчитают стоимость утерянной книги и объяснят дальнейшие действия.')
+                         'где вам посчитают стоимость утерянной книги и объяснят дальнейшие действия.', reply_markup=keyboard_delete)
     elif text == 'how_to_5':
         bot.send_message(call.message.chat.id,
-                         'В личном кабинете после авторизации можно посмотреть, какие книги у вас есть и на какой срок.')
+                         'В личном кабинете после авторизации можно посмотреть, какие книги у вас есть и на какой срок.', reply_markup=keyboard_delete)
     elif text == 'how_to_6':
         bot.send_message(call.message.chat.id,
                          'Достаточно прийти с читательским билетом на абонемент, где была заимствована книга и библиограф продлит книгу на семестр. '
-                         'Книги фундаментального отдела выдаются на 2 месяца.')
+                         'Книги фундаментального отдела выдаются на 2 месяца.', reply_markup=keyboard_delete)
     elif text == 'how_to_7':
         bot.send_message(call.message.chat.id,
                          'Обходной лист подписывается в библиотеке Главного корпуса. '
-                         'еобходимо сдать все книги и читательский билет (при утере билета оплачивается штраф в размере 50 руб).')
+                         'Необходимо сдать все книги и читательский билет (при утере билета оплачивается штраф в размере 50 руб).', reply_markup=keyboard_delete)
+    elif text == 'next_1':
+        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.send_message(call.message.chat.id, f"=Страница 2=",
+                         reply_markup=keyboard_layout_2)
+    elif text == 'back_2':
+        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.send_message(call.message.chat.id, f"=Страница 1=",
+                         reply_markup=keyboard_layout_1)
+    elif text == 'next_2':
+        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.send_message(call.message.chat.id, f"=Страница 3=",
+                         reply_markup=keyboard_layout_3)
+    elif text == 'back_3':
+        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.send_message(call.message.chat.id, f"=Страница 2=",
+                         reply_markup=keyboard_layout_2)
 
 
 # Запускаем бота
