@@ -316,3 +316,4 @@ def button_handler(call):
 
 # Запускаем бота
 bot.polling(none_stop=True)
+print('Everything works!')
