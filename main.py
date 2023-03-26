@@ -30,7 +30,7 @@ keyboard_layout_1.add(types.InlineKeyboardButton('➡', callback_data='next_1'))
 keyboard_layout_2 = types.InlineKeyboardMarkup(row_width=1)
 keyboard_layout_2.add(
     types.InlineKeyboardButton('Как получить читательский билет?', callback_data='how_to_2'),
-    types.InlineKeyboardButton('Как воспользоваться библиотечными системами из дома?', callback_data='how_to_3'),
+    types.InlineKeyboardButton('Как воспользоваться библиотекой из дома?', callback_data='how_to_3'),
     types.InlineKeyboardButton('Как взять литературу?', callback_data='how_to_1'),
     types.InlineKeyboardButton('Как оплатить утерянную книгу?', callback_data='how_to_4'),
     types.InlineKeyboardButton('Как узнать на какой срок выдана книга?', callback_data='how_to_5')
@@ -233,11 +233,11 @@ def button_handler(call):
                                                '- УЛК 2 этаж: ПН – ПТ 9:00 – 19:00\n'+rh_3, reply_markup=keyboard_delete)
 
     elif text == 'contacts':
-        bot.send_message(call.message.chat.id, '- Директор библиотеки Сессина Н.В. +7(812)490-05-86\n'
-                                               '- Зам.директора Перепеч С.Б. +7(812)495-76-84\n'
-                                               '- Отдел научной литературы  +7(812)495-76-56\n'
-                                               '- Отдел учебной литературы в Главном корпусе +7(812)495-76-97\n'
-                                               '- Отдел учебной литературы в УЛК +7(812)490-05-39',
+        bot.send_message(call.message.chat.id, '- Директор библиотеки Сессина Н.В.\n +7(812)490-05-86\n\n'
+                                               '- Зам.директора Перепеч С.Б.\n +7(812)495-76-84\n\n'
+                                               '- Отдел научной литературы \n +7(812)495-76-56\n\n'
+                                               '- Отдел учебной литературы в Главном корпусе \n +7(812)495-76-97\n\n'
+                                               '- Отдел учебной литературы в УЛК \n+7(812)490-05-39',
                          reply_markup=keyboard_delete)
     elif text == 'how_to_1':
         bot.send_message(call.message.chat.id,
@@ -266,14 +266,14 @@ def button_handler(call):
                          reply_markup=keyboard_delete)
     elif text == 'price':
         bot.send_message(call.message.chat.id, 'Черно-белая печать:\n'
-                                               'А4 – 5р.\n'
-                                               'А3 – 15р.\n'
-                                               'А2 – 50р.\n'
-                                               'А1 – 80р.\n'
+                                               '-А4 – 5р.\n'
+                                               '-А3 – 15р.\n'
+                                               '-А2 – 50р.\n'
+                                               '-А1 – 80р.\n'
                                                'За одну страницу\n\n'
                                                'Черно-белое копирование:\n'
-                                               'А4 – 5р.\n'
-                                               'А3 – 10р.\n'
+                                               '-А4 – 5р.\n'
+                                               '-А3 – 10р.\n'
                                                'за одну страницу\n\n'
                                                'Сканирование – 10р.\n\n'
                                                'В продаже также имеются канцтовары и книги.',
