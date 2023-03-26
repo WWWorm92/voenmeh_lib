@@ -148,7 +148,7 @@ def is_library_open(department='AMK'):
             else:
                 rh_1=c
         else:  # Выходной день
-            rh_1=o
+            rh_1=c
     elif department == 'GK4':
         if weekday in range(0, 5):  # Работаем с понедельника по пятницу
             if time >= datetime.time(11, 0) and time <= datetime.time(19, 0):  # Библиотека открыта с 11 до 19
