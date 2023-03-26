@@ -20,18 +20,18 @@ bot = telebot.TeleBot('6128509852:AAHtAYWFyXbeOlKWRTuAn551gP2CTheKw1c')
 # Создаем клавиатурный лейаут
 keyboard_layout_1 = types.InlineKeyboardMarkup(row_width=1)
 keyboard_layout_1.add(types.InlineKeyboardButton('Режим работы', callback_data='departments_shedule'),
+                      types.InlineKeyboardButton('Режим работы отделов сервисных услуг',
+                               callback_data='service_shedule'),
                       types.InlineKeyboardButton('Читальные залы', callback_data='reading_halls'),
                       types.InlineKeyboardButton('Контакты', callback_data='contacts'),
-                      types.InlineKeyboardButton('Как взять литературу?', callback_data='how_to_1'),
-                      types.InlineKeyboardButton('Как получить читательский билет?', callback_data='how_to_2')
+                      types.InlineKeyboardButton('Сколько стоит распечатка/копирование?', callback_data='price')
                       )
 keyboard_layout_1.add(types.InlineKeyboardButton('➡', callback_data='next_1'))
 keyboard_layout_2 = types.InlineKeyboardMarkup(row_width=1)
 keyboard_layout_2.add(
+    types.InlineKeyboardButton('Как получить читательский билет?', callback_data='how_to_2'),
     types.InlineKeyboardButton('Как воспользоваться библиотечными системами из дома?', callback_data='how_to_3'),
-    types.InlineKeyboardButton('Режим работы отделов сервисных услуг и секции организации выставок',
-                               callback_data='service_shedule'),
-    types.InlineKeyboardButton('Сколько стоит распечатка/копирование?', callback_data='price'),
+    types.InlineKeyboardButton('Как взять литературу?', callback_data='how_to_1'),
     types.InlineKeyboardButton('Как оплатить утерянную книгу?', callback_data='how_to_4'),
     types.InlineKeyboardButton('Как узнать на какой срок выдана книга?', callback_data='how_to_5')
 )
