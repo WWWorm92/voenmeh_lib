@@ -2,6 +2,7 @@ import telebot
 from telebot import types
 import datetime
 
+
 current_keyboard = 0
 lib_1=''
 lib_2=''
@@ -29,9 +30,9 @@ keyboard_layout_1.add(types.InlineKeyboardButton('Режим работы', call
 keyboard_layout_1.add(types.InlineKeyboardButton('➡', callback_data='next_1'))
 keyboard_layout_2 = types.InlineKeyboardMarkup(row_width=1)
 keyboard_layout_2.add(
-    types.InlineKeyboardButton('Как получить читательский билет?', callback_data='how_to_2'),
-    types.InlineKeyboardButton('Как воспользоваться библиотекой из дома?', callback_data='how_to_3'),
-    types.InlineKeyboardButton('Как взять литературу?', callback_data='how_to_1'),
+    types.InlineKeyboardButton('Как записаться в библиотеку?', callback_data='how_to_2'),
+    types.InlineKeyboardButton('Что можно найти на сайте библиотеки?', callback_data='how_to_3', height=2),
+    types.InlineKeyboardButton('Как получить книгу?', callback_data='how_to_1'),
     types.InlineKeyboardButton('Как оплатить утерянную книгу?', callback_data='how_to_4'),
     types.InlineKeyboardButton('Как узнать на какой срок выдана книга?', callback_data='how_to_5')
 )
@@ -40,6 +41,8 @@ keyboard_layout_2.add(types.InlineKeyboardButton('⬅', callback_data='back_2'),
 keyboard_layout_3 = types.InlineKeyboardMarkup(row_width=1)
 keyboard_layout_3.add(types.InlineKeyboardButton('Как продлить литературу?', callback_data='how_to_6'),
                       types.InlineKeyboardButton('Как подписать обходной лист?', callback_data='how_to_7'),
+                      types.InlineKeyboardButton('Что делать если книга не сдана вовремя?', callback_data='how_to_8'),
+                     types.InlineKeyboardButton('Что делать если потреял книгу?', callback_data='how_to_9'),
                       )
 keyboard_layout_3.add(types.InlineKeyboardButton('⬅', callback_data='back_3'))
 keyboard_delete = telebot.types.InlineKeyboardMarkup()
@@ -241,23 +244,29 @@ def button_handler(call):
                          reply_markup=keyboard_delete)
     elif text == 'how_to_1':
         bot.send_message(call.message.chat.id,
-                         'Книгу в печатном формате можно получить на абонементах, заполнив заявочный лист.\n'
-                         'В заявочном листе необходимо указать:\n'
-                         ' -Шифр книги\n'
-                         ' -Автора\n'
-                         ' -Заглавие\n'
-                         ' -Том\n'
-                         ' -Год издания\n'
-                         'Вся информация содержится в [эл.каталоге](ya.ru)\n\n'
-                         'Для получения литературы необходимо иметь читательский билет.', parse_mode='Markdown',
+                         '- Для получения литературы необходимо иметь читательский билет. Книгу'
+'в печатном формате можно получить на абонементах, заполнив Листок '
+'читательского требования, в котором необходимо указать шифр книги, '
+'автора, заглавие, год издания, том.'
+'Выходные данные книги можно посмотреть в электронных каталогах' 
+'на абонементах и на сайте библиотеки Library.voenmeh.ru.',
                          reply_markup=keyboard_delete)
     elif text == 'how_to_2':
         bot.send_message(call.message.chat.id,
+                         '- необходимо получить читательский билет \n'
                          'Читательский билет можно получить в библиотеке главного корпуса на 3 этаже.\n'
                          'С собой достаточно иметь пропуск.', reply_markup=keyboard_delete)
     elif text == 'how_to_3':
         bot.send_message(call.message.chat.id,
-                         'https://telegra.ph/Rekomendacii-po-ispolzovaniyu-biblioteki-Voenmeha-03-25\n',
+                         '- Сайт библиотеки Library.voenmeh.ru. Необходимо пройти авторизацию: '
+'ввести в поле Логин – фамилию с заглавной буквы, в поле Пароль - номер'
+'читательского билета.\n'
+'- На сайте можно посмотреть каталоги и выписать шифры, можно перейти'
+'по ссылкам и получить электронные версии печатных изданий и электронные'
+'книги. \n'
+'- Перейти по ссылкам в электронно-библиотечные системы, в научные'
+'ресурсы, сделать электронный заказ и задать вопросы библиографам \n'
+'(В правой части сайта есть инструкция «Как пользоваться электронно-библиотечными системами».',
                          reply_markup=keyboard_delete)
     elif text == 'service_shedule':
         bot.send_message(call.message.chat.id, 'Режим работы отделов сервисных услуг и секции организации выставок:\n'
@@ -289,13 +298,31 @@ def button_handler(call):
                          reply_markup=keyboard_delete)
     elif text == 'how_to_6':
         bot.send_message(call.message.chat.id,
-                         'Достаточно прийти с читательским билетом на абонемент, где была заимствована книга и библиограф продлит книгу на семестр. '
-                         'Книги фундаментального отдела выдаются на 2 месяца.', reply_markup=keyboard_delete)
+                         'Книги в отделе учебной литературы выдаются на один семестр: до 10.02'
+                       'или до 10.07. Чтобы продлить достаточно подойти с читательским билетом'
+                        'на абонемент, где книга была выдана или написать просьбу о продлении'
+                        'на электронную почту библиотеки Library@voenmeh.ru. \n'
+                         'Научная литература выдаётся на 2 месяца.', reply_markup=keyboard_delete)
     elif text == 'how_to_7':
         bot.send_message(call.message.chat.id,
                          'Обходной лист подписывается в библиотеке Главного корпуса. '
                          'Необходимо сдать все книги и читательский билет (при утере билета оплачивается штраф в размере 50 руб).',
                          reply_markup=keyboard_delete)
+    elif text == 'how_to_8':
+        bot.send_message(call.message.chat.id,
+                            'По истечении срока пользования литературой на следующий день начинает'
+                            'действовать услуга «Пользование литературой сверх установленного срока».'
+                            'Стоимость услуги 1 руб. за книгу в день. См. Правила пользования'
+                            'библиотекой на сайте. Кроме того, при записи в библиотеку, под подпись,'
+                            'выдаётся печатная версия правил.',
+                            reply_markup=keyboard_delete)
+    elif text == 'how_to_9':
+        bot.send_message(call.message.chat.id,
+                     'Если Вы потеряли книгу, то необходимо обратиться в отдел комплектования '
+'библиотеки: главный корпус, 3 этаж. Вам будет определена стоимость '
+'утраченной книги, которую Вы должны будете возместить или предложено' 
+'заменить утерянную книгу на другую, признанную библиотекой '
+'равноценной.',  reply_markup=keyboard_delete)
     elif text == 'next_1':
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
         bot.send_message(call.message.chat.id, f"=Страница 2=",
