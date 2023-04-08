@@ -16,7 +16,7 @@ rh_3=''
 rh_4=''
 
 # Создаем экземпляр бота
-bot = telebot.TeleBot('6128509852:AAHtAYWFyXbeOlKWRTuAn551gP2CTheKw1c')
+bot = telebot.TeleBot('6128509852:')
 
 # Создаем клавиатурный лейаут
 keyboard_layout_1 = types.InlineKeyboardMarkup(row_width=1)
