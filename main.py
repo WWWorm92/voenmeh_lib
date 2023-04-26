@@ -16,7 +16,7 @@ rh_3=''
 rh_4=''
 
 # Создаем экземпляр бота
-bot = telebot.TeleBot('6128509852:')
+bot = telebot.TeleBot('6128509852:AAHtAYWFyXbeOlKWRTuAn551gP2CTheKw1c')
 
 # Создаем клавиатурный лейаут
 keyboard_layout_1 = types.InlineKeyboardMarkup(row_width=1)
@@ -27,7 +27,7 @@ keyboard_layout_1.add(types.InlineKeyboardButton('Режим работы', call
                       types.InlineKeyboardButton('Контакты', callback_data='contacts'),
                       types.InlineKeyboardButton('Сколько стоит распечатка/копирование?', callback_data='price')
                       )
-keyboard_layout_1.add(types.InlineKeyboardButton('➡', callback_data='next_1'))
+keyboard_layout_1.add(types.InlineKeyboardButton('➡️', callback_data='next_1'))
 keyboard_layout_2 = types.InlineKeyboardMarkup(row_width=1)
 keyboard_layout_2.add(
     types.InlineKeyboardButton('Как записаться в библиотеку?', callback_data='how_to_2'),
@@ -36,20 +36,20 @@ keyboard_layout_2.add(
     types.InlineKeyboardButton('Как оплатить утерянную книгу?', callback_data='how_to_4'),
     types.InlineKeyboardButton('Как узнать на какой срок выдана книга?', callback_data='how_to_5')
 )
-keyboard_layout_2.add(types.InlineKeyboardButton('⬅', callback_data='back_2'),
-                      types.InlineKeyboardButton('➡', callback_data='next_2'))
+keyboard_layout_2.add(types.InlineKeyboardButton('⬅️', callback_data='back_2'),
+                      types.InlineKeyboardButton('➡️', callback_data='next_2'))
 keyboard_layout_3 = types.InlineKeyboardMarkup(row_width=1)
 keyboard_layout_3.add(types.InlineKeyboardButton('Как продлить литературу?', callback_data='how_to_6'),
                       types.InlineKeyboardButton('Как подписать обходной лист?', callback_data='how_to_7'),
                       types.InlineKeyboardButton('Что делать если книга не сдана вовремя?', callback_data='how_to_8'),
                      types.InlineKeyboardButton('Что делать если потреял книгу?', callback_data='how_to_9'),
                       )
-keyboard_layout_3.add(types.InlineKeyboardButton('⬅', callback_data='back_3'))
+keyboard_layout_3.add(types.InlineKeyboardButton('⬅️', callback_data='back_3'))
 keyboard_delete = telebot.types.InlineKeyboardMarkup()
 delete_button = telebot.types.InlineKeyboardButton(text='Удалить', callback_data='delete_message')
 keyboard_delete.add(delete_button)
 
-
+Антипов, [26.04.2023 22:12]
 def is_library_open(department='AMK'):
     global lib_1,lib_2,lib_3,lib_4,lib_5,lib_6,rh_1,rh_2,rh_3,rh_4
     o='✅СЕЙЧАС ОТКРЫТО✅'
@@ -123,7 +123,9 @@ def is_library_open(department='AMK'):
         elif weekday == 4:  # Пятница
             if time >= datetime.time(9, 0) and time <= datetime.time(16, 0) and not (
                     time >= datetime.time(12, 0) and time <= datetime.time(12,
-                                                                           30)):  # Абонемент открыт с 9 до 16, перерыв с 12 до 12:30
+
+Антипов, [26.04.2023 22:12]
+30)):  # Абонемент открыт с 9 до 16, перерыв с 12 до 12:30
                 lib_5 = o
             else:
                 lib_5 = c
@@ -198,7 +200,7 @@ def start_handler(message):
     bot.send_message(message.chat.id, f"Привет, {first_name}! Что тебя интересует?",
                      reply_markup=keyboard_layout_1)
 
-
+Антипов, [26.04.2023 22:12]
 # Обработчик для кнопок
 @bot.callback_query_handler(func=lambda call: True)
 def button_handler(call):
@@ -235,7 +237,8 @@ def button_handler(call):
                                                '- Главный корпус 4 этаж (школа): ПН – ПТ 11:00 – 19:00\n'+rh_2+'\n\n'
                                                '- УЛК 2 этаж: ПН – ПТ 9:00 – 19:00\n'+rh_3, reply_markup=keyboard_delete)
 
-    elif text == 'contacts':
+Антипов, [26.04.2023 22:12]
+elif text == 'contacts':
         bot.send_message(call.message.chat.id, '- Директор библиотеки Сессина Н.В.\n +7(812)490-05-86\n\n'
                                                '- Зам.директора Перепеч С.Б.\n +7(812)495-76-84\n\n'
                                                '- Отдел научной литературы \n +7(812)495-76-56\n\n'
@@ -294,7 +297,9 @@ def button_handler(call):
                          reply_markup=keyboard_delete)
     elif text == 'how_to_5':
         bot.send_message(call.message.chat.id,
-                         'В личном кабинете после авторизации можно посмотреть, какие книги у вас есть и на какой срок.',
+
+Антипов, [26.04.2023 22:12]
+'В личном кабинете после авторизации можно посмотреть, какие книги у вас есть и на какой срок.',
                          reply_markup=keyboard_delete)
     elif text == 'how_to_6':
         bot.send_message(call.message.chat.id,
